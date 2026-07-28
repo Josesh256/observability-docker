@@ -1,0 +1,18 @@
+# Secrets and local environment
+.env
+
+# Docker volume directories (persistent databases)
+prometheus_data/
+grafana_data/
+
+# Generated WireGuard configs & keys (never commit these)
+vpn/config/peer_*
+vpn/config/wg0.conf
+vpn/config/privatekey
+vpn/config/publickey
+vpn/config/templates/
+
+# Operating system files
+Thumbs.db
+Desktop.ini
+.DS_Store
