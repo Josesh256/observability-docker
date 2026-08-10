@@ -95,6 +95,16 @@ services:
       - ./monitoring/alertmanager:/etc/alertmanager:ro
     restart: unless-stopped
 
+  # Nginx Prometheus Exporter to read metrics from the Nginx status page
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: nginx_exporter
+    command:
+      - -nginx.scrape-uri=http://web_app:80/nginx_status
+    ports:
+      - "9113:9113"
+    restart: unless-stopped
+
 volumes:
   prometheus_data:
   grafana_data:

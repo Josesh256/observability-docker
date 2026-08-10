@@ -134,6 +134,23 @@ echo "--------------------"
 # Create folders
 mkdir -p vpn/config apps/web/html monitoring/prometheus monitoring/grafana/provisioning/datasources monitoring/grafana/provisioning/dashboards
 
+# Generate Alertmanager configuration with Telegram keys
+echo -e "\033[37mGenerating Alertmanager configuration from template...\033[0m"
+TELEGRAM_BOT_TOKEN=$(get_env_var "TELEGRAM_BOT_TOKEN" "YOUR_TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID=$(get_env_var "TELEGRAM_CHAT_ID" "YOUR_TELEGRAM_CHAT_ID")
+
+TEMPLATE_PATH="monitoring/alertmanager/alertmanager.yml.template"
+OUTPUT_PATH="monitoring/alertmanager/alertmanager.yml"
+
+if [ -f "$TEMPLATE_PATH" ]; then
+    mkdir -p "$(dirname "$OUTPUT_PATH")"
+    sed -e "s|TELEGRAM_BOT_TOKEN_PLACEHOLDER|$TELEGRAM_BOT_TOKEN|g" \
+        -e "s|TELEGRAM_CHAT_ID_PLACEHOLDER|$TELEGRAM_CHAT_ID|g" \
+        "$TEMPLATE_PATH" > "$OUTPUT_PATH"
+else
+    echo -e "\033[33mWarning: Alertmanager template not found!\033[0m"
+fi
+
 # Start Stack
 echo -e "\n\033[32mStarting docker containers...\033[0m"
 docker compose -p "$PROJECT_NAME" up -d

@@ -30,3 +30,14 @@ groups:
         annotations:
           summary: "⚠️ RAM al límite (>90%)"
           description: "El uso de memoria en {{ $labels.instance }} ha alcanzado el {{ $value | printf \"%.2f\" }}%."
+
+      # Nginx Down
+      - alert: NginxDown
+        expr: nginx_up == 0
+        for: 10s
+        labels:
+          severity: critical
+        annotations:
+          summary: "🚨 Servidor Nginx Caído"
+          description: "El servidor Nginx (web_app) no responde a las peticiones del exportador de métricas."
+

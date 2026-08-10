@@ -151,6 +151,28 @@ foreach ($dir in $Dirs) {
     }
 }
 
+# 3.5 Generate Alertmanager configuration with Telegram keys
+Write-Host "Generating Alertmanager configuration from template..." -ForegroundColor Gray
+$TelegramToken = Get-EnvVar "TELEGRAM_BOT_TOKEN" "YOUR_TELEGRAM_BOT_TOKEN"
+$TelegramChatId = Get-EnvVar "TELEGRAM_CHAT_ID" "YOUR_TELEGRAM_CHAT_ID"
+
+$TemplatePath = Join-Path $PSScriptRoot "monitoring/alertmanager/alertmanager.yml.template"
+$OutputPath = Join-Path $PSScriptRoot "monitoring/alertmanager/alertmanager.yml"
+
+if (Test-Path $TemplatePath) {
+    $Config = Get-Content -Raw -Path $TemplatePath
+    $Config = $Config.Replace("TELEGRAM_BOT_TOKEN_PLACEHOLDER", $TelegramToken)
+    $Config = $Config.Replace("TELEGRAM_CHAT_ID_PLACEHOLDER", $TelegramChatId)
+    # Ensure the parent directory exists
+    $ParentDir = Split-Path $OutputPath
+    if (-not (Test-Path $ParentDir)) {
+        New-Item -ItemType Directory -Force -Path $ParentDir | Out-Null
+    }
+    Set-Content -Path $OutputPath -Value $Config
+} else {
+    Write-Warning "Alertmanager configuration template not found!"
+}
+
 # 4. Spin up the containers
 Write-Host "Spinning up Docker containers..." -ForegroundColor Green
 docker compose -p $ProjectName up -d

@@ -2,7 +2,7 @@
 
 Este es un template modular e inteligente de observabilidad y VPN seguro, diseñado para poder ser acoplado a **cualquier proyecto** de manera extremadamente sencilla.
 
-![Arquitectura del Proyecto](arquitecturaDockerObs.png)
+<img src="arquitecturaDockerObs.png" width="650" alt="Arquitectura del Proyecto">
 
 ## Componentes del Stack
 - **WireGuard (WG-Easy)**: Gateway VPN seguro con panel web de administración para gestionar clientes, descargar configuraciones y ver códigos QR de forma visual.
@@ -92,3 +92,13 @@ Cuando levantas el stack por primera vez, puedes entrar al panel web de administ
 * Podrás ver y escanear el código QR directamente en tu móvil usando la aplicación de WireGuard.
 * También puedes descargar el fichero `.conf` para importarlo en tu portátil.
 * **Nota para testing local (Wi-Fi)**: Si pruebas la conexión VPN desde tu móvil dentro de la misma red local Wi-Fi, edita los ajustes del túnel importado en tu móvil y cambia el campo **Allowed IPs** (IPs permitidas) de `0.0.0.0/0` a `10.8.0.0/24` para habilitar el *Split Tunneling* y evitar perder tu conexión a internet general.
+* **Seguridad en la Nube (VPS)**: Si despliegas este stack en un servidor en la nube (AWS, DigitalOcean, etc.), el único puerto que debes dejar abierto al público en el firewall del proveedor es el **`51820` (UDP)** de WireGuard. Todos los demás puertos (`8080`, `3000`, `9090`, `51821`) deben permanecer **cerrados** al público exterior, garantizando que solo los usuarios conectados a la VPN puedan acceder a ellos.
+
+---
+
+## 📸 Captura de Alertas en Telegram
+
+Ejemplo real de las notificaciones que envía Prometheus y Alertmanager automáticamente a Telegram al caerse un servicio y su posterior resolución:
+
+<img src="Screenshot_9.png" width="300" alt="Ejemplo de Alertas de Telegram de la Observabilidad">
+

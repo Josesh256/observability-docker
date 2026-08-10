@@ -9,6 +9,7 @@ grafana_data/
 vpn/config/
 walkthrough.md
 task.md
+monitoring/alertmanager/alertmanager.yml
 # Operating system files
 Thumbs.db
 Desktop.ini
