@@ -1,0 +1,32 @@
+groups:
+  - name: system_alerts
+    rules:
+      # Instance Down (Container offline)
+      - alert: InstanceDown
+        expr: up == 0
+        for: 10s # Fast trigger for testing
+        labels:
+          severity: critical
+        annotations:
+          summary: "🔴 Instancia Caída"
+          description: "El contenedor {{ $labels.instance }} del job {{ $labels.job }} no responde."
+
+      # CPU Usage > 90%
+      - alert: HighCPUUsage
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "🔥 CPU al límite (>90%)"
+          description: "El uso de CPU en {{ $labels.instance }} ha alcanzado el {{ $value | printf \"%.2f\" }}%."
+
+      # Memory Usage > 90%
+      - alert: HighMemoryUsage
+        expr: 100 - ((node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100) > 90
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "⚠️ RAM al límite (>90%)"
+          description: "El uso de memoria en {{ $labels.instance }} ha alcanzado el {{ $value | printf \"%.2f\" }}%."

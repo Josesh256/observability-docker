@@ -6,12 +6,9 @@ prometheus_data/
 grafana_data/
 
 # Generated WireGuard configs & keys (never commit these)
-vpn/config/peer_*
-vpn/config/wg0.conf
-vpn/config/privatekey
-vpn/config/publickey
-vpn/config/templates/
-
+vpn/config/
+walkthrough.md
+task.md
 # Operating system files
 Thumbs.db
 Desktop.ini
